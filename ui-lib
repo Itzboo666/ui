@@ -1,0 +1,1695 @@
+--// Services
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+--// Utility
+local Utility = {}
+
+function Utility:Tween(element, tweentime, properties, easingstyle, easingdirection)
+	local easingstyle = easingstyle or Enum.EasingStyle.Linear
+	local easingdirection = easingdirection or Enum.EasingDirection.Out
+	TweenService:Create(element, TweenInfo.new(tweentime, easingstyle, easingdirection), properties):Play()
+end
+
+do
+    local FindUi = game:GetService("CoreGui"):FindFirstChild("BarkHub")
+    if FindUi then
+        FindUi:Destroy()
+    end
+end
+
+print("Loading..")
+
+repeat wait(1) until game:IsLoaded()
+
+--// Scripting
+local Bark = {}
+
+function Bark:createWindow(hubname, gamename, presetcolor)
+
+	local hubname = hubname or "Bark"
+	local gamename = gamename or game.Name
+	local maincolor = presetcolor or Color3.fromRGB(84, 84, 255)
+
+	local BackgroundColorElements = {}
+	local TextColorElements = {}
+	local ImageColorElements = {}
+
+	local BarkHub = Instance.new("ScreenGui")
+	local MainFrame = Instance.new("Frame")
+	local Hubname = Instance.new("TextLabel")
+	local TabHolder = Instance.new("ScrollingFrame")
+	local TabList = Instance.new("UIListLayout")
+	local MainFrameCorner = Instance.new("UICorner")
+	local Gamename = Instance.new("TextLabel")
+	local Pages = Instance.new("Folder")
+	local RightSide = Instance.new("Frame")
+	local RightSideCorner = Instance.new("UICorner")
+
+	BarkHub.Name = "BarkHub"
+	BarkHub.Parent = game:GetService("CoreGui")
+	BarkHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	MainFrame.Name = "MainFrame"
+	MainFrame.Parent = BarkHub
+	MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	MainFrame.Position = UDim2.new(0.258347958, 0, 0.25429976, 0)
+	MainFrame.Size = UDim2.new(0, 550, 0, 400)
+
+	Hubname.Name = "Hubname"
+	Hubname.Parent = MainFrame
+	Hubname.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Hubname.BackgroundTransparency = 1.000
+	Hubname.Position = UDim2.new(0.0236363634, 0, 0.0175000001, 0)
+	Hubname.Size = UDim2.new(0, 128, 0, 34)
+	Hubname.Font = Enum.Font.GothamSemibold
+	Hubname.Text = hubname
+	Hubname.TextColor3 = maincolor
+	Hubname.TextSize = 22.000
+	Hubname.TextXAlignment = Enum.TextXAlignment.Left
+
+	TabHolder.Name = "TabHolder"
+	TabHolder.Parent = MainFrame
+	TabHolder.Active = true
+	TabHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TabHolder.BackgroundTransparency = 1.000
+	TabHolder.BorderSizePixel = 0
+	TabHolder.Position = UDim2.new(0.0159999784, 0, 0.194999993, 0)
+	TabHolder.Size = UDim2.new(0, 142, 0, 312)
+	TabHolder.ScrollBarThickness = 4
+
+	TabList.Name = "TabList"
+	TabList.Parent = TabHolder
+	TabList.SortOrder = Enum.SortOrder.LayoutOrder
+
+	MainFrameCorner.CornerRadius = UDim.new(0, 4)
+	MainFrameCorner.Name = "MainFrameCorner"
+	MainFrameCorner.Parent = MainFrame
+
+	Gamename.Name = "Gamename"
+	Gamename.Parent = MainFrame
+	Gamename.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Gamename.BackgroundTransparency = 1.000
+	Gamename.Position = UDim2.new(0.0236363634, 0, 0.102499999, 0)
+	Gamename.Size = UDim2.new(0, 128, 0, 22)
+	Gamename.Font = Enum.Font.GothamSemibold
+	Gamename.Text = gamename
+	Gamename.TextColor3 = Color3.fromRGB(185, 185, 185)
+	Gamename.TextTransparency = 0.4
+	Gamename.TextSize = 15.000
+	Gamename.TextXAlignment = Enum.TextXAlignment.Left
+
+	Pages.Name = "Pages"
+	Pages.Parent = RightSide
+
+	RightSide.Name = "RightSide"
+	RightSide.Parent = MainFrame
+	RightSide.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+	RightSide.BorderSizePixel = 0
+	RightSide.Position = UDim2.new(0.287272722, 0, 0, 0)
+	RightSide.Size = UDim2.new(0, 392, 0, 400)
+
+	RightSideCorner.CornerRadius = UDim.new(0, 4)
+	RightSideCorner.Name = "RightSideCorner"
+	RightSideCorner.Parent = RightSide
+
+	for i, v in next, BarkHub:GetDescendants() do
+		if v:IsA("Frame") and v.BackgroundColor3 == presetcolor then
+			table.insert(BackgroundColorElements, v.Name)
+		elseif v:IsA("TextLabel") or v:IsA("TextButton") and v.TextColor3 == presetcolor then
+			table.insert(TextColorElements, v.Name)
+		elseif v:IsA("ImageLabel") and v.ImageColor3 == presetcolor then
+			table.insert(ImageColorElements, v.Name)
+		end
+	end
+
+	RunService.Heartbeat:Connect(function()
+		wait()
+		for i, v in next, BackgroundColorElements do
+			if maincolor == nil then else
+				for d, k in next, BarkHub:GetDescendants() do
+					if k.Name == v then
+						k.BackgroundColor3 = maincolor
+					end
+				end
+			end
+		end
+		for i, v in next, TextColorElements do
+			if maincolor == "nil" then else
+				for d, k in next, BarkHub:GetDescendants() do
+					if k.Name == v then
+						k.TextColor3 = maincolor
+					end
+				end
+			end
+		end
+		for i, v in next, ImageColorElements do
+			if maincolor == "nil" then else
+				for d, k in next, BarkHub:GetDescendants() do
+					if k.Name == v then
+						k.ImageColor3 = maincolor
+					end
+				end
+			end
+		end
+
+	end)
+
+	local dragToggle = nil
+	local dragSpeed = 0.07
+	local dragStart = nil
+	local startPos = nil
+
+	local function updateInput(input)
+		local delta = input.Position - dragStart
+		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		Utility:Tween(MainFrame, dragSpeed, {Position = position})
+	end
+
+	MainFrame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+			dragToggle = true
+			dragStart = input.Position
+			startPos = MainFrame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			if dragToggle then
+				updateInput(input)
+			end
+		end
+	end)
+
+	function Bark:Toggle()
+		if MainFrame.Size == UDim2.new(0, 550, 0, 400) then
+			MainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.5, true)
+		else
+			MainFrame:TweenSize(UDim2.new(0, 550, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.5, true)
+		end
+	end
+
+	local Window = {}
+
+	function Window:addPage(pagename)
+
+		local pagename = pagename or "Page"
+
+		local TabButton = Instance.new("Frame")
+		local TabButtonHover = Instance.new("Frame")
+		local TabButtonHoverCorner = Instance.new("UICorner")
+		local TabButtonName = Instance.new("TextLabel")
+		local TabButtonCorner = Instance.new("UICorner")
+		local TabButtonTrigger = Instance.new("TextButton")
+		local Page = Instance.new("ScrollingFrame")
+		local PageList = Instance.new("UIListLayout")
+
+		TabButton.Name = "TabButton"
+		TabButton.Parent = TabHolder
+		TabButton.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+		TabButton.Transparency = 1
+		TabButton.BorderSizePixel = 0
+		TabButton.Size = UDim2.new(0, 132, 0, 42)
+
+		TabButtonHover.Name = "TabButtonHover"
+		TabButtonHover.Parent = TabButton
+		TabButtonHover.BackgroundColor3 = maincolor
+		TabButtonHover.BackgroundTransparency = 0.300
+		TabButtonHover.Position = UDim2.new(0.060000103, 0, 0.209000364, 0)
+		TabButtonHover.Size = UDim2.new(0, 4, 0, 23)
+
+		TabButtonHoverCorner.Name = "TabButtonHoverCorner"
+		TabButtonHoverCorner.Parent = TabButtonHover
+
+		TabButtonName.Name = "TabButtonName"
+		TabButtonName.Parent = TabButton
+		TabButtonName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TabButtonName.BackgroundTransparency = 1.000
+		TabButtonName.Position = UDim2.new(0.174999997, 0, 0.162, 0)
+		TabButtonName.Size = UDim2.new(0, 92, 0, 27)
+		TabButtonName.Font = Enum.Font.Gotham
+		TabButtonName.Text = pagename
+		TabButtonName.TextColor3 = Color3.fromRGB(235, 235, 235)
+		TabButtonName.TextTransparency = 0.65
+		TabButtonName.TextSize = 14.000
+		TabButtonName.TextXAlignment = Enum.TextXAlignment.Left
+
+		TabButtonCorner.CornerRadius = UDim.new(0, 6)
+		TabButtonCorner.Name = "TabButtonCorner"
+		TabButtonCorner.Parent = TabButton
+
+		TabButtonTrigger.Name = "TabButtonTrigger"
+		TabButtonTrigger.Parent = TabButton
+		TabButtonTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TabButtonTrigger.BackgroundTransparency = 1.000
+		TabButtonTrigger.Size = UDim2.new(0, 132, 0, 42)
+		TabButtonTrigger.Font = Enum.Font.SourceSans
+		TabButtonTrigger.Text = ""
+		TabButtonTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+		TabButtonTrigger.TextSize = 14.000
+
+		Page.Name = "Page"
+		Page.Parent = Pages
+		Page.Active = true
+		Page.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Page.BackgroundTransparency = 1.000
+		Page.BorderSizePixel = 0
+		Page.Position = UDim2.new(0.0306122471, 0, 0.0300000012, 0)
+		Page.Size = UDim2.new(0, 367, 0, 376)
+		Page.ScrollBarThickness = 4
+		Page.Visible = false
+
+		PageList.Name = "PageList"
+		PageList.Parent = Page
+		PageList.SortOrder = Enum.SortOrder.LayoutOrder
+		PageList.Padding = UDim.new(0, 4)
+
+		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabList)
+		Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		Pages:FindFirstChild("Page").Visible = true
+		TabHolder:FindFirstChild("TabButton").TabButtonName.TextTransparency = 0
+		TabHolder:FindFirstChild("TabButton").TabButtonHover.BackgroundTransparency = 0
+		TabHolder:FindFirstChild("TabButton").BackgroundTransparency = 0
+
+		TabButtonTrigger.MouseButton1Click:Connect(function()
+
+			for i, v in pairs(Pages:GetChildren()) do
+				if v.Name == "Page" then
+					v.Visible = false
+				end
+			end
+			for i, v in pairs(TabHolder:GetChildren()) do
+				if v.Name == "TabButton" then
+					Utility:Tween(v:FindFirstChild("TabButtonName"), 0.3, {TextTransparency = 0.65}, Enum.EasingStyle.Linear)
+					Utility:Tween(v:FindFirstChild("TabButtonHover"), 0.3, {BackgroundTransparency = 0.65}, Enum.EasingStyle.Linear)
+					Utility:Tween(v, 0.3, {BackgroundTransparency = 1})
+				end
+			end
+
+			Utility:Tween(TabButtonName, 0.3, {TextTransparency = 0}, Enum.EasingStyle.Linear)
+			Utility:Tween(TabButtonHover, 0.3, {BackgroundTransparency = 0}, Enum.EasingStyle.Linear)
+			Utility:Tween(TabButton, 0.3, {BackgroundTransparency = 0})
+			Page.Visible = true
+
+		end)
+
+		local Container = {}
+
+		function Container:Label(labelname)
+
+			local labelname = labelname or "Label"
+
+			local Label = Instance.new("Frame")
+			local LabelCorner = Instance.new("UICorner")
+			local LabelName = Instance.new("TextLabel")
+
+			Label.Name = "Label"
+			Label.Parent = Page
+			Label.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Label.Size = UDim2.new(0, 355, 0, 30)
+
+			LabelCorner.CornerRadius = UDim.new(0, 4)
+			LabelCorner.Name = "LabelCorner"
+			LabelCorner.Parent = Label
+
+			LabelName.Name = "LabelName"
+			LabelName.Parent = Label
+			LabelName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			LabelName.BackgroundTransparency = 1.000
+			LabelName.Position = UDim2.new(0.0335210226, 0, 0.0666666701, 0)
+			LabelName.Size = UDim2.new(0, 330, 0, 25)
+			LabelName.Font = Enum.Font.GothamBold
+			LabelName.Text = labelname
+			LabelName.TextColor3 = maincolor
+			LabelName.TextSize = 14.000
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+			local Config = {}
+
+			function Config:Update(newlabelname)
+
+				local newlabelname = newlabelname or "Updated Label"
+
+				LabelName.Text = newlabelname
+
+			end
+
+			return Config
+
+		end
+
+		function Container:Button(buttonname, callback)
+
+			local buttonname = buttonname or "Button"
+			local callback = callback or function() end
+
+			local Button = Instance.new("Frame")
+			local ButtonCorner = Instance.new("UICorner")
+			local ButtonName = Instance.new("TextLabel")
+			local ButtonTrigger = Instance.new("TextButton")
+
+			Button.Name = "Button"
+			Button.Parent = Page
+			Button.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Button.Size = UDim2.new(0, 355, 0, 40)
+			Button.ClipsDescendants = true
+
+			ButtonCorner.CornerRadius = UDim.new(0, 4)
+			ButtonCorner.Name = "ButtonCorner"
+			ButtonCorner.Parent = Button
+
+			ButtonName.Name = "ButtonName"
+			ButtonName.Parent = Button
+			ButtonName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ButtonName.BackgroundTransparency = 1.000
+			ButtonName.Position = UDim2.new(0.0335210264, 0, 0.124472693, 0)
+			ButtonName.Size = UDim2.new(0, 330, 0, 29)
+			ButtonName.Font = Enum.Font.GothamSemibold
+			ButtonName.Text = buttonname
+			ButtonName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			ButtonName.TextSize = 14.000
+
+			ButtonTrigger.Name = "ButtonTrigger"
+			ButtonTrigger.Parent = Button
+			ButtonTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ButtonTrigger.BackgroundTransparency = 1.000
+			ButtonTrigger.Size = UDim2.new(0, 355, 0, 40)
+			ButtonTrigger.Font = Enum.Font.SourceSans
+			ButtonTrigger.Text = ""
+			ButtonTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			ButtonTrigger.TextSize = 14.000
+
+			ButtonTrigger.MouseEnter:Connect(function()
+				Utility:Tween(Button, 0.2, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+			end)
+			ButtonTrigger.MouseLeave:Connect(function()
+				Utility:Tween(Button, 0.2, {BackgroundColor3 = Color3.fromRGB(20, 20, 20)})
+			end)
+			ButtonTrigger.MouseButton1Click:Connect(function()
+
+				local circle = Instance.new("Frame")
+				local cornerRadius = Instance.new("UICorner")
+
+				circle.AnchorPoint = Vector2.new(0.5, 0.5)
+				circle.BackgroundColor3 = maincolor
+				circle.Size = UDim2.new(0, 0, 0, 0)
+
+				cornerRadius.CornerRadius = UDim.new(0.5, 0)
+				cornerRadius.Parent = circle
+
+				local function CalculateDistance(pointA, pointB)
+					return math.sqrt(((pointB.X - pointA.X) ^ 2) + ((pointB.Y - pointA.Y) ^ 2))
+				end
+
+				local buttonAbsoluteSize = Button.AbsoluteSize
+				local buttonAbsolutePosition = Button.AbsolutePosition
+
+				local mouseAbsolutePosition = Vector2.new(Mouse.X, Mouse.Y)
+				local mouseRelativePosition = (mouseAbsolutePosition - buttonAbsolutePosition)
+
+				circle.BackgroundTransparency = 0.84
+				circle.Position = UDim2.new(0, mouseRelativePosition.X, 0, mouseRelativePosition.Y)
+				circle.Parent = Button
+
+				local topLeft = CalculateDistance(mouseRelativePosition, Vector2.new(0, 0))
+				local topRight = CalculateDistance(mouseRelativePosition, Vector2.new(buttonAbsoluteSize.X, 0))
+				local bottomRight = CalculateDistance(mouseRelativePosition, buttonAbsoluteSize)
+				local bottomLeft = CalculateDistance(mouseRelativePosition, Vector2.new(0, buttonAbsoluteSize.Y))
+
+				local size = math.max(topLeft, topRight, bottomRight, bottomLeft) * 2
+
+				local tweenTime = 0.5 -- seconds
+				local startedTimestamp
+				local completed = false
+
+				local expand = TweenService:Create(
+					circle,
+					TweenInfo.new(
+						tweenTime,
+						Enum.EasingStyle.Linear,
+						Enum.EasingDirection.Out
+					),
+					{ Size = UDim2.new(0, size, 0, size) }
+				)
+
+				local connection
+				connection = RunService.RenderStepped:Connect(function()
+					connection:Disconnect()
+
+					local defaultTime = (tweenTime / 3)
+					local timeRemaining = tweenTime - (os.time() - startedTimestamp)
+					local newTweenTime = not completed and timeRemaining > defaultTime and timeRemaining or defaultTime
+
+					local fadeOut = TweenService:Create(
+						circle,
+						TweenInfo.new(
+							newTweenTime,
+							Enum.EasingStyle.Linear,
+							Enum.EasingDirection.Out
+						),
+						{ BackgroundTransparency = 1 }
+					)
+
+					fadeOut:Play()
+					fadeOut.Completed:Wait()
+
+					circle:Destroy()
+				end)
+
+				expand:Play()
+				startedTimestamp = os.time()
+				expand.Completed:Wait()
+
+				completed = true
+			end)
+			ButtonTrigger.MouseButton1Click:Connect(function()
+				pcall(callback)
+			end)
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		end
+
+		function Container:Toggle(togglename, default, callback)
+
+			local togglename = togglename or "Toggle"
+			local default = default or false
+			local callback = callback or function() end
+
+			local Toggle = Instance.new("Frame")
+			local ToggleCorner = Instance.new("UICorner")
+			local ToggleName = Instance.new("TextLabel")
+			local ToggleOut = Instance.new("Frame")
+			local ToggleOutCorner = Instance.new("UICorner")
+			local ToggleIn = Instance.new("Frame")
+			local ToggleInCorner = Instance.new("UICorner")
+			local ToggleTrigger = Instance.new("TextButton")
+
+			Toggle.Name = "Toggle"
+			Toggle.Parent = Page
+			Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Toggle.Size = UDim2.new(0, 355, 0, 40)
+
+			ToggleCorner.CornerRadius = UDim.new(0, 4)
+			ToggleCorner.Name = "ToggleCorner"
+			ToggleCorner.Parent = Toggle
+
+			ToggleName.Name = "ToggleName"
+			ToggleName.Parent = Toggle
+			ToggleName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ToggleName.BackgroundTransparency = 1.000
+			ToggleName.Position = UDim2.new(0.0335210226, 0, 0.124472812, 0)
+			ToggleName.Size = UDim2.new(0, 266, 0, 29)
+			ToggleName.Font = Enum.Font.GothamSemibold
+			ToggleName.Text = togglename
+			ToggleName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			ToggleName.TextSize = 14.000
+			ToggleName.TextXAlignment = Enum.TextXAlignment.Left
+
+			ToggleOut.Name = "ToggleOut"
+			ToggleOut.Parent = Toggle
+			ToggleOut.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+			ToggleOut.BackgroundTransparency = 0
+			ToggleOut.Position = UDim2.new(0.870422482, 0, 0.36945051, 0)
+			ToggleOut.Size = UDim2.new(0, 32, 0, 10)
+
+			ToggleOutCorner.Name = "ToggleOutCorner"
+			ToggleOutCorner.Parent = ToggleOut
+
+			ToggleIn.Name = "ToggleIn"
+			ToggleIn.Parent = Toggle
+			ToggleIn.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+			ToggleIn.Position = UDim2.new(0.865, 0, 0.294, 0)
+			ToggleIn.Size = UDim2.new(0, 16, 0, 16)
+
+			ToggleInCorner.Name = "ToggleInCorner"
+			ToggleInCorner.Parent = ToggleIn
+
+			ToggleTrigger.Name = "ToggleTrigger"
+			ToggleTrigger.Parent = Toggle
+			ToggleTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ToggleTrigger.BackgroundTransparency = 1.000
+			ToggleTrigger.Size = UDim2.new(0, 355, 0, 40)
+			ToggleTrigger.Font = Enum.Font.SourceSans
+			ToggleTrigger.Text = ""
+			ToggleTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			ToggleTrigger.TextSize = 14.000
+
+			if default == true then
+				Utility:Tween(ToggleIn, 0.2, {Position = UDim2.new(0.915492892, 0, 0.294450402, 0)}, Enum.EasingStyle.Quart)
+				Utility:Tween(ToggleOut, 0.2, {BackgroundColor3 = maincolor}, Enum.EasingStyle.Quart)
+				Utility:Tween(ToggleOut, 0.2, {BackgroundTransparency = 0.4}, Enum.EasingStyle.Quart)
+				Utility:Tween(ToggleIn, 0.2, {BackgroundColor3 = maincolor}, Enum.EasingStyle.Quart)
+			end
+
+			pcall(callback, default)
+
+			ToggleTrigger.MouseButton1Click:Connect(function()
+
+				if default == true then
+					default = false
+					Utility:Tween(ToggleIn, 0.2, {Position = UDim2.new(0.865492892, 0, 0.294450402, 0)}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleOut, 0.2, {BackgroundTransparency = 0}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleOut, 0.2, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleIn, 0.2, {BackgroundColor3 = Color3.fromRGB(200, 200, 200)}, Enum.EasingStyle.Quart)
+				else
+					default = true
+					Utility:Tween(ToggleIn, 0.2, {Position = UDim2.new(0.915492892, 0, 0.294450402, 0)}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleOut, 0.2, {BackgroundColor3 = maincolor}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleOut, 0.2, {BackgroundTransparency = 0.4}, Enum.EasingStyle.Quart)
+					Utility:Tween(ToggleIn, 0.2, {BackgroundColor3 = maincolor}, Enum.EasingStyle.Quart)
+				end
+
+				pcall(callback, default)
+
+			end)
+
+			ToggleTrigger.MouseEnter:Connect(function()
+				Utility:Tween(Toggle, 0.2, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+			end)
+			ToggleTrigger.MouseLeave:Connect(function()
+				Utility:Tween(Toggle, 0.2, {BackgroundColor3 = Color3.fromRGB(20, 20, 20)})
+			end)
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		end
+
+		function Container:Slider(slidername, minvalue, maxvalue, startvalue, callback)
+
+			local slidername = slidername or "Slider"
+			local minvalue = minvalue or 1
+			local maxvalue = maxvalue or 100
+			local startvalue = startvalue or 50
+			local callback = callback or function() end
+
+			local Slider = Instance.new("Frame")
+			local SliderCorner = Instance.new("UICorner")
+			local SliderOut = Instance.new("Frame")
+			local SliderIn = Instance.new("Frame")
+			local SliderInCorner = Instance.new("UICorner")
+			local SliderTrigger = Instance.new("TextButton")
+			local SliderOutCorner = Instance.new("UICorner")
+			local SliderName = Instance.new("TextLabel")
+			local SliderValue = Instance.new("TextBox")
+
+			Slider.Name = "Slider"
+			Slider.Parent = Page
+			Slider.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Slider.Position = UDim2.new(0, 0, 0.324468076, 0)
+			Slider.Size = UDim2.new(0, 355, 0, 50)
+
+			SliderCorner.CornerRadius = UDim.new(0, 4)
+			SliderCorner.Name = "SliderCorner"
+			SliderCorner.Parent = Slider
+
+			SliderOut.Name = "SliderOut"
+			SliderOut.Parent = Slider
+			SliderOut.BackgroundColor3 = maincolor
+			SliderOut.BackgroundTransparency = 0.500
+			SliderOut.Position = UDim2.new(0.0335210226, 0, 0.74000001, 0)
+			SliderOut.Size = UDim2.new(0, 330, 0, 6)
+
+			SliderIn.Name = "SliderIn"
+			SliderIn.Parent = SliderOut
+			SliderIn.BackgroundColor3 = maincolor
+			SliderIn.BorderSizePixel = 0
+			SliderIn.Size = UDim2.new(0, 165, 0, 6)
+
+			SliderInCorner.CornerRadius = UDim.new(0, 4)
+			SliderInCorner.Name = "SliderInCorner"
+			SliderInCorner.Parent = SliderIn
+
+			SliderTrigger.Name = "SliderTrigger"
+			SliderTrigger.Parent = SliderOut
+			SliderTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderTrigger.BackgroundTransparency = 1.000
+			SliderTrigger.Size = UDim2.new(0, 355, 0, 35)
+			SliderTrigger.Font = Enum.Font.SourceSans
+			SliderTrigger.Text = ""
+			SliderTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			SliderTrigger.TextSize = 14.000
+
+			SliderOutCorner.CornerRadius = UDim.new(0, 4)
+			SliderOutCorner.Name = "SliderOutCorner"
+			SliderOutCorner.Parent = SliderOut
+
+			SliderName.Name = "SliderName"
+			SliderName.Parent = Slider
+			SliderName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderName.BackgroundTransparency = 1.000
+			SliderName.Position = UDim2.new(0.0335210226, 0, 0.164472654, 0)
+			SliderName.Size = UDim2.new(0, 266, 0, 25)
+			SliderName.Font = Enum.Font.GothamSemibold
+			SliderName.Text = slidername
+			SliderName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			SliderName.TextSize = 14.000
+			SliderName.TextXAlignment = Enum.TextXAlignment.Left
+
+			SliderValue.Name = "SliderValue"
+			SliderValue.Parent = Slider
+			SliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderValue.BackgroundTransparency = 1.000
+			SliderValue.Position = UDim2.new(0.802816927, 0, 0.164472654, 0)
+			SliderValue.Size = UDim2.new(0, 56, 0, 25)
+			SliderValue.Font = Enum.Font.GothamSemibold
+			SliderValue.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+			SliderValue.Text = startvalue
+			SliderValue.TextColor3 = Color3.fromRGB(208, 208, 208)
+			SliderValue.TextSize = 14.000
+			SliderValue.TextXAlignment = Enum.TextXAlignment.Right
+
+			local Value = 0
+			local SliderTweenTime = 0.12
+
+			SliderTrigger.MouseEnter:Connect(function()
+				Utility:Tween(Slider, 0.2, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+			end)
+			SliderTrigger.MouseLeave:Connect(function()
+				Utility:Tween(Slider, 0.2, {BackgroundColor3 = Color3.fromRGB(20, 20, 20)})
+			end)
+
+			SliderValue.Text = tostring(startvalue)
+			Value = startvalue
+			Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new((startvalue) / maxvalue, 0, 0, 6)})
+			pcall(function()
+				callback(Value)
+			end)
+
+			SliderTrigger.MouseButton1Down:Connect(function()
+				Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 330) * SliderIn.AbsoluteSize.X) + tonumber(minvalue)) or 0
+				Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new(0, math.clamp(Mouse.X - SliderIn.AbsolutePosition.X, 0, 330), 0, 6)})
+				pcall(function()
+					callback(Value)
+				end)
+				SliderValue.Text = Value
+				moveconnection = Mouse.Move:Connect(function()
+					SliderValue.Text = Value
+					Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 330) * SliderIn.AbsoluteSize.X) + tonumber(minvalue))
+					Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new(0, math.clamp(Mouse.X - SliderIn.AbsolutePosition.X, 0, 330), 0, 6)})
+					pcall(function()
+						callback(Value)
+					end)
+				end)
+				releaseconnection = UserInputService.InputEnded:Connect(function(mouseinput)
+					if mouseinput.UserInputType == Enum.UserInputType.MouseButton1 then
+						Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 330) * SliderIn.AbsoluteSize.X) + tonumber(minvalue))
+						SliderValue.Text = Value
+						Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new(0, math.clamp(Mouse.X - SliderIn.AbsolutePosition.X, 0, 330), 0, 6)})
+						moveconnection:Disconnect()
+						releaseconnection:Disconnect()
+						pcall(function()
+							callback(Value)
+						end)
+						SliderValue.Text = Value
+					end
+				end)
+			end)
+
+			SliderValue.FocusLost:Connect(function()
+				if SliderValue.Text >= tostring(maxvalue) then
+
+					Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new((tonumber(maxvalue) or 0) / maxvalue, 0, 0, 6)})
+					SliderValue.Text = tostring(tonumber(maxvalue))
+					Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 330) * SliderIn.AbsoluteSize.X) + tonumber(minvalue)) or 0
+					pcall(function()
+						callback(Value)
+					end)
+
+				else
+
+					Utility:Tween(SliderIn, SliderTweenTime, {Size = UDim2.new((tonumber(SliderValue.Text) or 0) / maxvalue, 0, 0, 6)})
+					SliderValue.Text = tostring(tonumber(SliderValue.Text))
+					Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 490) * SliderIn.AbsoluteSize.X) + tonumber(minvalue)) or 0
+					pcall(function()
+						callback(Value)
+					end)
+
+				end
+			end)
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		end
+
+		function Container:Keybind(keybindname, presetkey, callback)
+
+			local keybindname = keybindname or "Keybind"
+			local presetkey = presetkey or Enum.KeyCode.E
+			local callback = callback or function() end
+
+			local Keybind = Instance.new("Frame")
+			local KeybindCorner = Instance.new("UICorner")
+			local KeybindName = Instance.new("TextLabel")
+			local KeybindTrigger = Instance.new("TextButton")
+			local KeybindSelected = Instance.new("TextLabel")
+			local KeybindSelectedCorner = Instance.new("UICorner")
+
+			Keybind.Name = "Keybind"
+			Keybind.Parent = Page
+			Keybind.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Keybind.Size = UDim2.new(0, 355, 0, 40)
+
+			KeybindCorner.CornerRadius = UDim.new(0, 4)
+			KeybindCorner.Name = "KeybindCorner"
+			KeybindCorner.Parent = Keybind
+
+			KeybindName.Name = "KeybindName"
+			KeybindName.Parent = Keybind
+			KeybindName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			KeybindName.BackgroundTransparency = 1.000
+			KeybindName.Position = UDim2.new(0.0335210226, 0, 0.124472044, 0)
+			KeybindName.Size = UDim2.new(0, 244, 0, 29)
+			KeybindName.Font = Enum.Font.GothamSemibold
+			KeybindName.Text = keybindname
+			KeybindName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			KeybindName.TextSize = 14.000
+			KeybindName.TextXAlignment = Enum.TextXAlignment.Left
+
+			KeybindTrigger.Name = "KeybindTrigger"
+			KeybindTrigger.Parent = Keybind
+			KeybindTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			KeybindTrigger.BackgroundTransparency = 1.000
+			KeybindTrigger.Size = UDim2.new(0, 355, 0, 40)
+			KeybindTrigger.Font = Enum.Font.SourceSans
+			KeybindTrigger.Text = ""
+			KeybindTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			KeybindTrigger.TextSize = 14.000
+
+			KeybindSelected.Name = "KeybindSelected"
+			KeybindSelected.Parent = Keybind
+			KeybindSelected.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			KeybindSelected.Position = UDim2.new(0.74901402, 0, 0.124472044, 0)
+			KeybindSelected.Size = UDim2.new(0, 76, 0, 29)
+			KeybindSelected.Font = Enum.Font.GothamSemibold
+			KeybindSelected.Text = tostring(presetkey.Name)
+			KeybindSelected.TextColor3 = maincolor
+			KeybindSelected.TextSize = 14.000
+
+			KeybindSelectedCorner.CornerRadius = UDim.new(0, 4)
+			KeybindSelectedCorner.Name = "KeybindSelectedCorner"
+			KeybindSelectedCorner.Parent = KeybindSelected
+
+			local ToggledKeybind = false
+
+			KeybindTrigger.MouseButton1Click:connect(function()
+				KeybindSelected.Text = "..."
+				local inputwait = UserInputService.InputBegan:wait()
+				if inputwait.KeyCode.Name ~= "Unknown" then
+					KeybindSelected.Text = inputwait.KeyCode.Name
+					presetkey = inputwait.KeyCode
+					ToggledKeybind = true
+				end
+			end)
+
+			UserInputService.InputBegan:connect(function(current, pressed)
+				if not pressed then
+					if current.KeyCode.Name == presetkey.Name then
+						wait()
+						if ToggledKeybind == true then 
+							ToggledKeybind = false 
+						else
+							pcall(callback, current)                        
+						end
+					end
+				end
+			end)
+
+			KeybindTrigger.MouseEnter:Connect(function()
+				Utility:Tween(Keybind, 0.2, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+			end)
+			KeybindTrigger.MouseLeave:Connect(function()
+				Utility:Tween(Keybind, 0.2, {BackgroundColor3 = Color3.fromRGB(20, 20, 20)})
+			end)
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		end
+
+		function Container:Textbox(textboxname, presettext, callback)
+
+			local textboxname = textboxname or "Textbox"
+			local presettext = presettext or "Enter text.."
+			local callback = callback or function() end
+
+			local Textbox = Instance.new("Frame")
+			local TextboxCorner = Instance.new("UICorner")
+			local TextboxName = Instance.new("TextLabel")
+			local TextBoxInput = Instance.new("TextBox")
+			local TextboxInputCorner = Instance.new("UICorner")
+
+			Textbox.Name = "Textbox"
+			Textbox.Parent = Page
+			Textbox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Textbox.Size = UDim2.new(0, 355, 0, 40)
+
+			TextboxCorner.CornerRadius = UDim.new(0, 4)
+			TextboxCorner.Name = "TextboxCorner"
+			TextboxCorner.Parent = Textbox
+
+			TextboxName.Name = "TextboxName"
+			TextboxName.Parent = Textbox
+			TextboxName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			TextboxName.BackgroundTransparency = 1.000
+			TextboxName.Position = UDim2.new(0.0335210226, 0, 0.124472044, 0)
+			TextboxName.Size = UDim2.new(0, 165, 0, 29)
+			TextboxName.Font = Enum.Font.GothamSemibold
+			TextboxName.Text = textboxname
+			TextboxName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			TextboxName.TextSize = 14.000
+			TextboxName.TextXAlignment = Enum.TextXAlignment.Left
+
+			TextBoxInput.Name = "TextBoxInput"
+			TextBoxInput.Parent = Textbox
+			TextBoxInput.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			TextBoxInput.Position = UDim2.new(0.681, 0, 0.124, 0)
+			TextBoxInput.Size = UDim2.new(0, 100, 0, 29)
+			TextBoxInput.Font = Enum.Font.GothamSemibold
+			TextBoxInput.Text = ""
+			TextBoxInput.PlaceholderText = presettext
+			TextBoxInput.TextColor3 = maincolor
+			TextBoxInput.TextSize = 14.000
+
+			TextboxInputCorner.CornerRadius = UDim.new(0, 4)
+			TextboxInputCorner.Name = "TextboxInputCorner"
+			TextboxInputCorner.Parent = TextBoxInput
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+			TextBoxInput.Focused:Connect(function()
+				Utility:Tween(TextBoxInput, 0.2, {Position = UDim2.new(0.526, 0, 0.124, 0)})
+				Utility:Tween(TextBoxInput, 0.2, {Size = UDim2.new(0, 154, 0, 29)})
+			end)
+			TextBoxInput.FocusLost:Connect(function()
+				Utility:Tween(TextBoxInput, 0.2, {Position = UDim2.new(0.681, 0, 0.124, 0)})
+				Utility:Tween(TextBoxInput, 0.2, {Size = UDim2.new(0, 100, 0, 29)})
+				pcall(callback, TextBoxInput.Text)
+			end)
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+		end
+
+		function Container:DoubleLabel(firstlabel, secondlabel, secondcolor)
+
+			local firstlabel = firstlabel or "Label 1"
+			local secondlabel = secondlabel or "Label 2"
+			local secondcolor = secondcolor or maincolor
+
+			local DoubleLabel = Instance.new("Frame")
+			local DoubleLabelCorner = Instance.new("UICorner")
+			local Label1 = Instance.new("TextLabel")
+			local Label2 = Instance.new("TextLabel")
+
+			DoubleLabel.Name = "DoubleLabel"
+			DoubleLabel.Parent = Page
+			DoubleLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			DoubleLabel.Size = UDim2.new(0, 355, 0, 30)
+
+			DoubleLabelCorner.CornerRadius = UDim.new(0, 4)
+			DoubleLabelCorner.Name = "DoubleLabelCorner"
+			DoubleLabelCorner.Parent = DoubleLabel
+
+			Label1.Name = "Label2"
+			Label1.Parent = DoubleLabel
+			Label1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Label1.BackgroundTransparency = 1.000
+			Label1.Position = UDim2.new(0.0335210226, 0, 0.0666666701, 0)
+			Label1.Size = UDim2.new(0, 165, 0, 25)
+			Label1.Font = Enum.Font.GothamBold
+			Label1.Text = firstlabel
+			Label1.TextColor3 = Color3.fromRGB(208, 208, 208)
+			Label1.TextSize = 14.000
+			Label1.TextXAlignment = Enum.TextXAlignment.Left
+
+			Label2.Name = "Label1"
+			Label2.Parent = DoubleLabel
+			Label2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Label2.BackgroundTransparency = 1.000
+			Label2.Position = UDim2.new(0.495492846, 0, 0.0666666701, 0)
+			Label2.Size = UDim2.new(0, 165, 0, 25)
+			Label2.Font = Enum.Font.GothamBold
+			Label2.Text = secondlabel
+			Label2.TextColor3 = secondcolor
+			Label2.TextSize = 14.000
+			Label2.TextXAlignment = Enum.TextXAlignment.Right
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+			local Config = {}
+
+			function Config:Update(newtext)
+
+				local newtext = newtext or "Updated Label"
+
+				Label2.Text = newtext
+
+			end
+
+			return Config
+
+		end
+
+		function Container:Dropdown(dropdownname, itemlist, callback)
+
+			local dropdownname = dropdownname or "Dropdown"
+			local itemlist = itemlist or {}
+			local callback = callback or function() end
+
+			local framesize = 0
+			local itemcount = 0
+			local dropopen = false
+
+			local Dropdown = Instance.new("Frame")
+			local DropdownCorner = Instance.new("UICorner")
+			local DropdownInfoHolder = Instance.new("Frame")
+			local DropdownSelected = Instance.new("TextBox")
+			local DropdownName = Instance.new("TextLabel")
+			local DropdownTrigger = Instance.new("TextButton")
+			local DropdownItemHolder = Instance.new("ScrollingFrame")
+			local DropdownItemList = Instance.new("UIListLayout")
+			local DropdownOutSort = Instance.new("UIListLayout")
+
+			Dropdown.Name = "Dropdown"
+			Dropdown.Parent = Page
+			Dropdown.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Dropdown.ClipsDescendants = true
+			Dropdown.Position = UDim2.new(0.0163487736, 0, 0.401117027, 0)
+			Dropdown.Size = UDim2.new(0, 355, 0, 40)
+
+			DropdownCorner.CornerRadius = UDim.new(0, 4)
+			DropdownCorner.Name = "DropdownCorner"
+			DropdownCorner.Parent = Dropdown
+
+			DropdownInfoHolder.Name = "DropdownInfoHolder"
+			DropdownInfoHolder.Parent = Dropdown
+			DropdownInfoHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownInfoHolder.BackgroundTransparency = 1.000
+			DropdownInfoHolder.Size = UDim2.new(0, 355, 0, 40)
+
+			DropdownSelected.Name = "DropdownSelected"
+			DropdownSelected.Parent = DropdownInfoHolder
+			DropdownSelected.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownSelected.BackgroundTransparency = 1.000
+			DropdownSelected.Position = UDim2.new(0.802816927, 0, 0.164472654, 0)
+			DropdownSelected.Size = UDim2.new(0, 56, 0, 25)
+			DropdownSelected.Font = Enum.Font.GothamSemibold
+			DropdownSelected.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+			DropdownSelected.Text = itemlist[1] or ""
+			DropdownSelected.TextColor3 = maincolor
+			DropdownSelected.TextSize = 14.000
+			DropdownSelected.TextXAlignment = Enum.TextXAlignment.Right
+
+			DropdownName.Name = "DropdownName"
+			DropdownName.Parent = DropdownInfoHolder
+			DropdownName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownName.BackgroundTransparency = 1.000
+			DropdownName.Position = UDim2.new(0.0335210226, 0, 0.164472967, 0)
+			DropdownName.Size = UDim2.new(0, 200, 0, 25)
+			DropdownName.Font = Enum.Font.GothamSemibold
+			DropdownName.Text = dropdownname
+			DropdownName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			DropdownName.TextSize = 14.000
+			DropdownName.TextXAlignment = Enum.TextXAlignment.Left
+
+			DropdownTrigger.Name = "DropdownTrigger"
+			DropdownTrigger.Parent = DropdownInfoHolder
+			DropdownTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownTrigger.BackgroundTransparency = 1.000
+			DropdownTrigger.Size = UDim2.new(0, 284, 0, 40)
+			DropdownTrigger.Font = Enum.Font.SourceSans
+			DropdownTrigger.Text = ""
+			DropdownTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			DropdownTrigger.TextSize = 14.000
+
+			DropdownItemHolder.Name = "DropdownItemHolder"
+			DropdownItemHolder.Parent = Dropdown
+			DropdownItemHolder.Active = true
+			DropdownItemHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownItemHolder.BackgroundTransparency = 1.000
+			DropdownItemHolder.BorderSizePixel = 0
+			DropdownItemHolder.Position = UDim2.new(0.0352112688, 0, 0.489130437, 0)
+			DropdownItemHolder.Size = UDim2.new(0, 330, 0, 30)
+			DropdownItemHolder.ScrollBarThickness = 4
+
+			DropdownItemList.Name = "DropdownItemList"
+			DropdownItemList.Parent = DropdownItemHolder
+			DropdownItemList.SortOrder = Enum.SortOrder.LayoutOrder
+			DropdownItemList.Padding = UDim.new(0, 2)
+
+			DropdownOutSort.Name = "DropdownOutSort"
+			DropdownOutSort.Parent = Dropdown
+			DropdownOutSort.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			DropdownOutSort.SortOrder = Enum.SortOrder.LayoutOrder
+			DropdownOutSort.Padding = UDim.new(0, 5)
+
+			DropdownTrigger.MouseButton1Click:Connect(function()
+
+				if dropopen then -- closing
+					Utility:Tween(Dropdown, 0.3, {Size = UDim2.new(0, 355, 0, 40)})
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				else
+					DropdownSelected:CaptureFocus()
+					if itemcount ~= 0 then -- opening
+						Utility:Tween(Dropdown, 0.3, {Size = UDim2.new(0, 355, 0, 54 + framesize)})
+						wait(0.3)
+						Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+					end
+				end
+
+				dropopen = not dropopen
+
+			end)
+
+			DropdownSelected.Focused:Connect(function() -- opening
+
+				if itemcount ~= 0 then
+					dropopen = not dropopen
+					Utility:Tween(Dropdown, 0.3, {Size = UDim2.new(0, 355, 0, 54 + framesize)})
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				end
+
+			end)
+
+			DropdownSelected.FocusLost:Connect(function() -- closing
+				
+				dropopen = not dropopen
+				Utility:Tween(Dropdown, 0.3, {Size = UDim2.new(0, 355, 0, 40)})
+				wait(0.3)
+				Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+
+			end)
+			
+			DropdownSelected.Changed:Connect(function()
+				if DropdownSelected.Text ~= "" then
+					local text = DropdownSelected.Text:lower()
+
+					for i, v in pairs(DropdownItemHolder:GetChildren()) do
+						if v:IsA("TextButton") then
+							local ItemName = v.Text
+							local ItemNL = ItemName:lower()
+
+							if string.find(ItemNL, text) then
+
+								v.Visible = true
+								DropdownItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropdownItemList.AbsoluteContentSize.Y)
+
+							else
+
+								v.Visible = false
+								DropdownItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropdownItemList.AbsoluteContentSize.Y)
+
+							end
+
+						end
+					end
+
+				else
+
+					for i, v in pairs(DropdownItemHolder:GetChildren()) do
+						if v:IsA("TextButton") then
+							v.Visible = true
+							DropdownItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropdownItemList.AbsoluteContentSize.Y)
+						end
+					end
+
+				end
+				
+			end)
+
+			for i, v in next, itemlist do
+
+				itemcount = itemcount + 1
+				if itemcount <= 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					framesize = framesize + 30
+				end
+				if itemcount > 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+				end
+
+				DropdownItemHolder.Size = UDim2.new(0, 330, 0, framesize)
+
+				local Item = Instance.new("TextButton")
+				local ItemCorner = Instance.new("UICorner")
+
+				Item.Name = "Item"
+				Item.Parent = DropdownItemHolder
+				Item.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+				Item.Size = UDim2.new(0, 328, 0, 30)
+				Item.AutoButtonColor = false
+				Item.Font = Enum.Font.GothamSemibold
+				Item.Text = v
+				Item.TextColor3 = maincolor
+				Item.TextSize = 14.000
+
+				ItemCorner.CornerRadius = UDim.new(0, 5)
+				ItemCorner.Parent = Item
+
+				Item.MouseEnter:Connect(function()
+					Utility:Tween(Item, 0.15, {BackgroundColor3 = Color3.fromRGB(10, 10, 10)})
+				end)
+				Item.MouseLeave:Connect(function()
+					Utility:Tween(Item, 0.15, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+				end)
+				Item.MouseButton1Click:Connect(function()
+					DropdownSelected.Text = v
+					dropopen = not dropopen
+					Dropdown:TweenSize(UDim2.new(0, 355, 0, 40), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, false)
+					pcall(callback, v)
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				end)
+
+			end
+
+			Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+			
+			local Config = {}
+			
+			function Config:Add(itemname)
+				
+				local itemname = itemname or "Dog"
+				
+				itemcount = itemcount + 1
+				if itemcount <= 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					framesize = framesize + 30
+				end
+				if itemcount > 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+				end
+				
+				Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				DropdownItemHolder.Size = UDim2.new(0, 330, 0, framesize)
+
+				local Item = Instance.new("TextButton")
+				local ItemCorner = Instance.new("UICorner")
+
+				Item.Name = "Item"
+				Item.Parent = DropdownItemHolder
+				Item.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+				Item.Size = UDim2.new(0, 328, 0, 30)
+				Item.AutoButtonColor = false
+				Item.Font = Enum.Font.GothamSemibold
+				Item.Text = itemname
+				Item.TextColor3 = maincolor
+				Item.TextSize = 14.000
+
+				ItemCorner.CornerRadius = UDim.new(0, 5)
+				ItemCorner.Parent = Item
+
+				Item.MouseEnter:Connect(function()
+					Utility:Tween(Item, 0.15, {BackgroundColor3 = Color3.fromRGB(10, 10, 10)})
+				end)
+				Item.MouseLeave:Connect(function()
+					Utility:Tween(Item, 0.15, {BackgroundColor3 = Color3.fromRGB(15, 15, 15)})
+				end)
+				Item.MouseButton1Click:Connect(function()
+					DropdownSelected.Text = itemname
+					dropopen = not dropopen
+					Dropdown:TweenSize(UDim2.new(0, 355, 0, 40), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, false)
+					pcall(callback, Item.Text)
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				end)
+				
+			end
+			
+			function Config:Remove(itemname)
+
+				local itemname = itemname or DropdownItemHolder:FindFirstChild("Item").Text
+				
+				if DropdownItemHolder:FindFirstChild("Item").Text == itemname then
+					DropdownItemHolder:FindFirstChild("Item"):Destroy()
+				end
+				if DropdownSelected.Text == itemname then
+					DropdownSelected.Text = DropdownItemHolder:FindFirstChild("Item").Text 
+				end
+				
+				itemcount = itemcount - 1
+				if itemcount <= 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					framesize = framesize - 30
+				end
+				if itemcount > 4 then
+					DropdownItemList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+				end
+
+				Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				DropdownItemHolder.Size = UDim2.new(0, 330, 0, framesize)
+
+			end
+			
+			function Config:Clear()
+				
+				function Config:Clear()
+					DropdownSelected.Text = ""
+					framesize = 0
+					itemcount = 0
+					for i, v in next, DropdownItemList:GetChildren() do
+						if v.Name == "Item" then
+							v:Destroy()
+						end
+					end
+					if dropopen == true then
+						dropopen = not dropopen
+						Dropdown:TweenSize(UDim2.new(0, 355, 0, 40), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, false)
+						pcall(callback, DropdownSelected.Text)
+						wait(0.3)
+						Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+					end
+				end
+				
+			end
+				
+			return Config
+			
+		end
+		
+		--[[ Sorry I can't make that.
+		
+		function Container:Colorpicker(rgbmode, callback)
+			
+			local callback = callback or function() end
+			local RGBMode = rgbmode or false
+			local pickeropen = false
+			
+			local OldToggleColor = Color3.fromRGB(0, 0, 0)
+			local OldColor = Color3.fromRGB(0, 0, 0)
+			local OldColorSelectionPosition = nil
+			local OldHueSelectionPosition = nil
+			local ColorH, ColorS, ColorV = 1, 1, 1
+			local RainbowColorPicker = false
+			local ColorPickerInput = nil
+			local ColorInput = nil
+			local HueInput = nil
+
+			local Colorpicker = Instance.new("Frame")
+			local ColorpickerCorner = Instance.new("UICorner")
+			local ColorpickerInfoHolder = Instance.new("Frame")
+			local ColorpickerTrigger = Instance.new("TextButton")
+			local ColorpickerTriggerCorner = Instance.new("UICorner")
+			local ColorpickerName = Instance.new("TextLabel")
+			local ColorpickerValue = Instance.new("TextBox")
+			local ColorpickerOutSort = Instance.new("UIListLayout")
+			local ColorpickerHolder = Instance.new("Frame")
+			local ColorpickerHolderCorner = Instance.new("UICorner")
+			local RGBModeToggleOut = Instance.new("Frame")
+			local RGBToggleOutCorner = Instance.new("UICorner")
+			local RGBModeToggleIn = Instance.new("Frame")
+			local RGBToggleInCorner = Instance.new("UICorner")
+			local RGB = Instance.new("ImageLabel")
+			local RGBMarker = Instance.new("Frame")
+			local Value = Instance.new("ImageLabel")
+			local ValueMarker = Instance.new("Frame")
+			local RGBLabel = Instance.new("TextLabel")
+
+			Colorpicker.Name = "Colorpicker"
+			Colorpicker.Parent = Page
+			Colorpicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+			Colorpicker.ClipsDescendants = true
+			Colorpicker.Position = UDim2.new(0, 0, 0.228723407, 0)
+			Colorpicker.Size = UDim2.new(0, 355, 0, 40)
+
+			ColorpickerCorner.CornerRadius = UDim.new(0, 4)
+			ColorpickerCorner.Name = "ColorpickerCorner"
+			ColorpickerCorner.Parent = Colorpicker
+
+			ColorpickerInfoHolder.Name = "ColorpickerInfoHolder"
+			ColorpickerInfoHolder.Parent = Colorpicker
+			ColorpickerInfoHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ColorpickerInfoHolder.BackgroundTransparency = 1.000
+			ColorpickerInfoHolder.Size = UDim2.new(0, 355, 0, 40)
+
+			ColorpickerTrigger.Name = "ColorpickerTrigger"
+			ColorpickerTrigger.Parent = ColorpickerInfoHolder
+			ColorpickerTrigger.BackgroundColor3 = maincolor
+			ColorpickerTrigger.Position = UDim2.new(0.892957687, 0, 0.149999991, 0)
+			ColorpickerTrigger.Size = UDim2.new(0, 24, 0, 24)
+			ColorpickerTrigger.AutoButtonColor = false
+			ColorpickerTrigger.Font = Enum.Font.SourceSans
+			ColorpickerTrigger.Text = ""
+			ColorpickerTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+			ColorpickerTrigger.TextSize = 14.000
+
+			ColorpickerTriggerCorner.CornerRadius = UDim.new(0, 4)
+			ColorpickerTriggerCorner.Name = "ColorpickerTriggerCorner"
+			ColorpickerTriggerCorner.Parent = ColorpickerTrigger
+
+			ColorpickerName.Name = "ColorpickerName"
+			ColorpickerName.Parent = ColorpickerInfoHolder
+			ColorpickerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ColorpickerName.BackgroundTransparency = 1.000
+			ColorpickerName.Position = UDim2.new(0.0335210226, 0, 0.164472967, 0)
+			ColorpickerName.Size = UDim2.new(0, 200, 0, 25)
+			ColorpickerName.Font = Enum.Font.GothamSemibold
+			ColorpickerName.Text = "Colorpicker"
+			ColorpickerName.TextColor3 = Color3.fromRGB(208, 208, 208)
+			ColorpickerName.TextSize = 14.000
+			ColorpickerName.TextXAlignment = Enum.TextXAlignment.Left
+
+			ColorpickerValue.Name = "ColorpickerValue"
+			ColorpickerValue.Parent = ColorpickerInfoHolder
+			ColorpickerValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ColorpickerValue.BackgroundTransparency = 1.000
+			ColorpickerValue.BorderSizePixel = 0
+			ColorpickerValue.Position = UDim2.new(0.646478891, 0, 0.150000006, 0)
+			ColorpickerValue.Size = UDim2.new(0, 78, 0, 24)
+			ColorpickerValue.Font = Enum.Font.Gotham
+			ColorpickerValue.Text = 	tostring(math.floor(maincolor.R * 255)..", ")..tostring(math.floor(maincolor.G * 255)..", ")..tostring(math.floor(maincolor.B * 255))
+			ColorpickerValue.TextColor3 = Color3.fromRGB(208, 208, 208)
+			ColorpickerValue.TextSize = 14.000
+
+			ColorpickerOutSort.Name = "ColorpickerOutSort"
+			ColorpickerOutSort.Parent = Colorpicker
+			ColorpickerOutSort.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			ColorpickerOutSort.SortOrder = Enum.SortOrder.LayoutOrder
+			ColorpickerOutSort.Padding = UDim.new(0, 5)
+
+			ColorpickerHolder.Name = "ColorpickerHolder"
+			ColorpickerHolder.Parent = Colorpicker
+			ColorpickerHolder.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			ColorpickerHolder.BorderSizePixel = 0
+			ColorpickerHolder.Position = UDim2.new(0.0295774657, 0, 0.306666672, 0)
+			ColorpickerHolder.Size = UDim2.new(0, 330, 0, 96)
+
+			ColorpickerHolderCorner.CornerRadius = UDim.new(0, 4)
+			ColorpickerHolderCorner.Name = "ColorpickerHolderCorner"
+			ColorpickerHolderCorner.Parent = ColorpickerHolder
+
+			RGBModeToggleOut.Name = "RGBModeToggleOut"
+			RGBModeToggleOut.Parent = ColorpickerHolder
+			RGBModeToggleOut.BackgroundColor3 = maincolor
+			RGBModeToggleOut.BackgroundTransparency = 0.500
+			RGBModeToggleOut.Position = UDim2.new(0.903755903, 0, 0.265534699, 0)
+			RGBModeToggleOut.Size = UDim2.new(0, 10, 0, 36)
+
+			RGBToggleOutCorner.Name = "RGBToggleOutCorner"
+			RGBToggleOutCorner.Parent = RGBModeToggleOut
+
+			RGBModeToggleIn.Name = "RGBModeToggleIn"
+			RGBModeToggleIn.Parent = ColorpickerHolder
+			RGBModeToggleIn.BackgroundColor3 = maincolor
+			RGBModeToggleIn.Position = UDim2.new(0.894280791, 0, 0.523993552, 0)
+			RGBModeToggleIn.Size = UDim2.new(0, 16, 0, 16)
+
+			RGBToggleInCorner.Name = "RGBToggleInCorner"
+			RGBToggleInCorner.Parent = RGBModeToggleIn
+
+			RGB.Name = "RGB"
+			RGB.Parent = ColorpickerHolder
+			RGB.AnchorPoint = Vector2.new(0.5, 0)
+			RGB.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			RGB.BorderColor3 = Color3.fromRGB(40, 40, 40)
+			RGB.BorderSizePixel = 0
+			RGB.Position = UDim2.new(0.348484844, 0, 0.154719025, 0)
+			RGB.Size = UDim2.new(0.600000083, 0, 0.683333218, 0)
+			RGB.ZIndex = 4
+			RGB.Image = "rbxassetid://1433361550"
+			RGB.SliceCenter = Rect.new(10, 10, 90, 90)
+
+			RGBMarker.Name = "RGBMarker"
+			RGBMarker.Parent = RGB
+			RGBMarker.AnchorPoint = Vector2.new(0.5, 0.5)
+			RGBMarker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			RGBMarker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			RGBMarker.BorderSizePixel = 2
+			RGBMarker.Position = UDim2.new(0.5, 0, 1, 0)
+			RGBMarker.Size = UDim2.new(0, 4, 0, 4)
+			RGBMarker.ZIndex = 5
+
+			Value.Name = "Value"
+			Value.Parent = ColorpickerHolder
+			Value.AnchorPoint = Vector2.new(0.5, 0)
+			Value.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			Value.BorderColor3 = Color3.fromRGB(40, 40, 40)
+			Value.BorderSizePixel = 0
+			Value.Position = UDim2.new(0.7439394, 0, 0.15471904, 0)
+			Value.Size = UDim2.new(0.100000001, 0, 0.683333099, 0)
+			Value.ZIndex = 4
+			Value.Image = "rbxassetid://359311684"
+			Value.SliceCenter = Rect.new(10, 10, 90, 90)
+
+			ValueMarker.Name = "ValueMarker"
+			ValueMarker.Parent = Value
+			ValueMarker.AnchorPoint = Vector2.new(0.5, 0.5)
+			ValueMarker.BackgroundColor3 = maincolor
+			ValueMarker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			ValueMarker.BorderSizePixel = 2
+			ValueMarker.Position = UDim2.new(0.5, 0, -0.00740101235, 0)
+			ValueMarker.Size = UDim2.new(0, 37, 0, 3)
+			ValueMarker.ZIndex = 5
+
+			RGBLabel.Name = "RGBLabel"
+			RGBLabel.Parent = ColorpickerHolder
+			RGBLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			RGBLabel.BackgroundTransparency = 1.000
+			RGBLabel.Position = UDim2.new(0.855757475, 0, 0.765135467, 0)
+			RGBLabel.Size = UDim2.new(0, 43, 0, 13)
+			RGBLabel.Font = Enum.Font.GothamSemibold
+			RGBLabel.Text = "RGB"
+			RGBLabel.TextColor3 = Color3.fromRGB(208, 208, 208)
+			RGBLabel.TextSize = 14.000
+			
+			local ColorH, ColorS, ColorV = 1, 1, 1
+
+			ColorpickerTrigger.MouseButton1Click:Connect(function()
+
+				if pickeropen then -- closing
+					Utility:Tween(Colorpicker, 0.3, {Size = UDim2.new(0, 355, 0, 40)})
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				else
+					Utility:Tween(Colorpicker, 0.3, {Size = UDim2.new(0, 355, 0, 150)})
+					wait(0.3)
+					Page.CanvasSize = UDim2.new(0, 0, 0, PageList.AbsoluteContentSize.Y)
+				end
+
+				pickeropen = not pickeropen
+
+			end)
+			
+			local function UpdateColorPicker(nope)
+				BoxColor.BackgroundColor3 = Color3.fromHSV(ColorH, ColorS, ColorV)
+				Color.BackgroundColor3 = Color3.fromHSV(ColorH, 1, 1)
+
+				pcall(callback, BoxColor.BackgroundColor3)
+			end
+
+			ColorH =
+				1 -
+				(math.clamp(HueSelection.AbsolutePosition.Y - Hue.AbsolutePosition.Y, 0, Hue.AbsoluteSize.Y) /
+					Hue.AbsoluteSize.Y)
+			ColorS =
+				(math.clamp(ColorSelection.AbsolutePosition.X - Color.AbsolutePosition.X, 0, Color.AbsoluteSize.X) /
+					Color.AbsoluteSize.X)
+			ColorV =
+				1 -
+				(math.clamp(ColorSelection.AbsolutePosition.Y - Color.AbsolutePosition.Y, 0, Color.AbsoluteSize.Y) /
+					Color.AbsoluteSize.Y)
+
+			BoxColor.BackgroundColor3 = preset
+			Color.BackgroundColor3 = preset
+			pcall(callback, BoxColor.BackgroundColor3)
+
+			Color.InputBegan:Connect(
+				function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if RainbowColorPicker then
+							return
+						end
+
+						if ColorInput then
+							ColorInput:Disconnect()
+						end
+
+						ColorInput =
+							RunService.RenderStepped:Connect(
+								function()
+									local ColorX =
+									(math.clamp(Mouse.X - Color.AbsolutePosition.X, 0, Color.AbsoluteSize.X) /
+										Color.AbsoluteSize.X)
+									local ColorY =
+									(math.clamp(Mouse.Y - Color.AbsolutePosition.Y, 0, Color.AbsoluteSize.Y) /
+										Color.AbsoluteSize.Y)
+
+									ColorSelection.Position = UDim2.new(ColorX, 0, ColorY, 0)
+									ColorS = ColorX
+									ColorV = 1 - ColorY
+
+									UpdateColorPicker(true)
+								end
+							)
+					end
+				end
+			)
+
+			Color.InputEnded:Connect(
+				function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if ColorInput then
+							ColorInput:Disconnect()
+						end
+					end
+				end
+			)
+
+			Hue.InputBegan:Connect(
+				function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if RainbowColorPicker then
+							return
+						end
+
+						if HueInput then
+							HueInput:Disconnect()
+						end
+
+						HueInput =
+							RunService.RenderStepped:Connect(
+								function()
+									local HueY =
+									(math.clamp(Mouse.Y - Hue.AbsolutePosition.Y, 0, Hue.AbsoluteSize.Y) /
+										Hue.AbsoluteSize.Y)
+
+									HueSelection.Position = UDim2.new(0.48, 0, HueY, 0)
+									ColorH = 1 - HueY
+
+									UpdateColorPicker(true)
+								end
+							)
+					end
+				end
+			)
+
+			Hue.InputEnded:Connect(
+				function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if HueInput then
+							HueInput:Disconnect()
+						end
+					end
+				end
+			)
+
+			RainbowToggle.MouseButton1Down:Connect(
+				function()
+					RainbowColorPicker = not RainbowColorPicker
+
+					if ColorInput then
+						ColorInput:Disconnect()
+					end
+
+					if HueInput then
+						HueInput:Disconnect()
+					end
+
+					if RainbowColorPicker then
+						TweenService:Create(
+							FrameRainbowToggle1,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 1}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggle2,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 1}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggle3,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 0}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggleCircle,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundColor3 = Color3.fromRGB(255,255,255)}
+						):Play()
+						FrameRainbowToggleCircle:TweenPosition(UDim2.new(0.587, 0, 0.222000003, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
+
+						OldToggleColor = BoxColor.BackgroundColor3
+						OldColor = Color.BackgroundColor3
+						OldColorSelectionPosition = ColorSelection.Position
+						OldHueSelectionPosition = HueSelection.Position
+
+						while RainbowColorPicker do
+							BoxColor.BackgroundColor3 = Color3.fromHSV(lib.RainbowColorValue, 1, 1)
+							Color.BackgroundColor3 = Color3.fromHSV(lib.RainbowColorValue, 1, 1)
+
+							ColorSelection.Position = UDim2.new(1, 0, 0, 0)
+							HueSelection.Position = UDim2.new(0.48, 0, 0, lib.HueSelectionPosition)
+
+							pcall(callback, BoxColor.BackgroundColor3)
+							wait()
+						end
+					elseif not RainbowColorPicker then
+						TweenService:Create(
+							FrameRainbowToggle1,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 0}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggle2,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 0}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggle3,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundTransparency = 1}
+						):Play()
+						TweenService:Create(
+							FrameRainbowToggleCircle,
+							TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+							{BackgroundColor3 = Color3.fromRGB(50,50,50)}
+						):Play()
+						FrameRainbowToggleCircle:TweenPosition(UDim2.new(0.127000004, 0, 0.222000003, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
+
+						BoxColor.BackgroundColor3 = OldToggleColor
+						Color.BackgroundColor3 = OldColor
+
+						ColorSelection.Position = OldColorSelectionPosition
+						HueSelection.Position = OldHueSelectionPosition
+
+						pcall(callback, BoxColor.BackgroundColor3)
+					end
+				end
+			)
+
+			ConfirmBtn.MouseButton1Click:Connect(
+				function()
+					ColorSelection.Visible = false
+					HueSelection.Visible = false
+					Colorpicker:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
+					wait(.2)
+					Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+				end
+			)
+
+		end
+		
+		]]
+ 
+		return Container
+
+	end
+
+	return Window
+
+end
+
+return Bark
